@@ -1,28 +1,65 @@
-import { useState } from 'react'
+import React from 'react';
+import Hero from './components/Hero';
+import Skills from './components/Skills';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
+import { Menu } from 'lucide-react';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const onResize = () => setOpen(false);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
+    <div className="min-h-screen bg-slate-950 text-white font-inter">
+      {/* Simple sticky nav */}
+      <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-white/10">
+        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="#home" className="font-semibold tracking-tight text-white">
+            <span className="text-teal-300">močitagent</span> dev
+          </a>
+          <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
+            <a href="#skills" className="hover:text-white">Skills</a>
+            <a href="#projects" className="hover:text-white">Projects</a>
+            <a href="#contact" className="hover:text-white">Contact</a>
+            <a
+              href="#projects"
+              className="rounded-lg bg-teal-400 text-slate-950 font-semibold px-3 py-2 hover:bg-teal-300 transition"
+            >
+              Hire Me
+            </a>
+          </nav>
           <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+            className="md:hidden inline-flex items-center justify-center rounded-md border border-white/10 bg-white/5 p-2"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
           >
-            Count is {count}
+            <Menu className="h-5 w-5" />
           </button>
         </div>
-      </div>
-    </div>
-  )
-}
+        {open && (
+          <div className="md:hidden border-t border-white/10 bg-slate-950/80">
+            <div className="container mx-auto px-6 py-3 flex flex-col gap-3 text-sm text-white/80">
+              <a href="#skills" onClick={() => setOpen(false)} className="hover:text-white">Skills</a>
+              <a href="#projects" onClick={() => setOpen(false)} className="hover:text-white">Projects</a>
+              <a href="#contact" onClick={() => setOpen(false)} className="hover:text-white">Contact</a>
+            </div>
+          </div>
+        )}
+      </header>
 
-export default App
+      <main>
+        <Hero />
+        <Skills />
+        <Projects />
+        <Contact />
+      </main>
+    </div>
+  );
+};
+
+export default App;
